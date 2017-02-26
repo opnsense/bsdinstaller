@@ -123,9 +123,8 @@ App.start_ui(App.UIBridge.new(require("dfui"), {
 --            |                | returning to the main menu.
 -- lang_id    | string         | Identifier of the language the user has
 --            |                | selected to work in, or nil for default.
--- vidfont    | string         | \
--- scrnmap    | string         | - Console settings.
--- keymap     | string         | /
+-- vidfont    | string         | Console setting
+-- keymap     | string         | Console setting
 --
 -----------------------------------------------------------------------------
 

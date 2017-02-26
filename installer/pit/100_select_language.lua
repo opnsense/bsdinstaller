@@ -107,7 +107,6 @@ return {
 		for i, lang_tab in languages do
 			if lang_tab.id == App.state.lang_id then
 				App.state.vidfont = lang_tab.vidfont
-				App.state.scrnmap = lang_tab.scrnmap
 				App.state.keymap = lang_tab.keymap
 				break
 			end

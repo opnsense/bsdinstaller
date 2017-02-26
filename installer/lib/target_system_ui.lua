@@ -433,15 +433,6 @@ TargetSystemUI.configure_console = function(tab)
 			    end
 			},
 			{
-			    id = "scrnmap",
-			    name = _("Change Screenmap (%s)",
-				App.state.scrnmap or _("default")),
-			    effect = function()
-				TargetSystemUI.set_screen_map(tab.ts)
-				return false
-			    end
-			},
-			{
 			    id = "keymap",
 			    name = _("Change Keymap (%s)",
 				App.state.keymap or _("default")),
@@ -575,57 +566,6 @@ TargetSystemUI.set_video_font = function(ts)
 	else
 		ui:inform(_(
 		    "Errors occurred; video font was not successfully set."
-		))
-	end
-end
-
-TargetSystemUI.set_screen_map = function(ts)
-	local cmds, files, dir, filename, full_filename
-
-	--
-	-- Select a file.
-	--
-	dir = App.expand("${root}${base}usr/share/syscons/scrnmaps",
-	    {
-		base = ts:get_base()
-	    }
-	)
-
-	filename = ui:select_file{
-	    title = _("Select Screen Map"),
-	    short_desc = _(
-		"Select a mapping for translating characters as they " ..
-		"appear on your video console screen."
-	    ),
-	    cancel_desc = _("Return to Configure Console"),
-	    dir = dir,
-	    predicate = function(filename)
-		return string.find(filename, "%.scm$")
-	    end
-	}
-	if filename == "cancel" then
-		return false
-	end
-	filename = dir .. "/" .. filename
-
-	cmds = CmdChain.new()
-	cmds:add{
-	    cmdline = "${root}${VIDCONTROL} -l ${filename} < /dev/ttyv0",
-	    replacements = { filename = filename }
-	}
-	if cmds:execute() then
-		--
-		-- Add this to future rc.conf settings, and also
-		-- note it in the App.state.
-		--
-		filename = FileName.remove_extension(FileName.basename(filename))
-		App.state.rc_conf:set("scrnmap", filename)
-		App.state.scrnmap = filename
-
-		return true
-	else
-		ui:inform(_(
-		    "Errors occurred; screen map was not successfully set."
 		))
 	end
 end
