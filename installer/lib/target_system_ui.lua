@@ -34,6 +34,7 @@
 module "target_system_ui"
 
 local App = require("app")
+local POSIX = require("posix")
 local FileName = require("filename")
 
 local ui
@@ -395,6 +396,11 @@ end
 
 TargetSystemUI.configure_console = function(tab)
 	tab = tab or {}
+
+	if POSIX.stat("/dev/ttyv0", "type") == nil then
+		return true
+	end
+
 	local form = {
 	    id = "configure_console",
 	    name = _("Configure Console"),
