@@ -424,6 +424,15 @@ TargetSystemUI.configure_console = function(tab)
 			    end
 			},
 			{
+			    id = "keymap",
+			    name = _("Change Keymap (%s)",
+				App.state.keymap or _("default")),
+			    effect = function()
+				TargetSystemUI.set_keyboard_map(tab.ts)
+				return false
+			    end
+			},
+			{
 			    id = "vidfont",
 			    name = _("Change Video Font (%s)",
 				App.state.vidfont or _("default")),
@@ -432,15 +441,6 @@ TargetSystemUI.configure_console = function(tab)
 				return false
 			    end
 			},
-			{
-			    id = "keymap",
-			    name = _("Change Keymap (%s)",
-				App.state.keymap or _("default")),
-			    effect = function()
-				TargetSystemUI.set_keyboard_map(tab.ts)
-				return false
-			    end
-			}
 		}
 		if tab.allow_cancel then
 			table.insert(form.actions, {
