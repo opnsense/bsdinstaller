@@ -465,7 +465,7 @@ TargetSystemUI.set_keyboard_map = function(ts)
 	--
 	-- Select a file.
 	--
-	dir = App.expand("${root}${base}usr/share/syscons/keymaps",
+	dir = App.expand("${root}${base}usr/share/vt/keymaps",
 	    {
 		base = ts:get_base()
 	    }
@@ -516,7 +516,7 @@ TargetSystemUI.set_video_font = function(ts)
 	--
 	-- Select a file.
 	--
-	dir = App.expand("${root}${base}usr/share/syscons/fonts",
+	dir = App.expand("${root}${base}usr/share/vt/fonts",
 	    {
 		base = ts:get_base()
 	    }
