@@ -102,6 +102,9 @@ return {
 		if POSIX.stat("/tmp/hdrescue/conf/netflow.tgz", "type") == "regular" then
 			cmds:add("${root}bin/cp /tmp/hdrescue/conf/netflow.tgz /conf");
 		end
+		if POSIX.stat("/tmp/hdrescue/conf/captiveportal.sqlite", "type") == "regular" then
+			cmds:add("${root}bin/cp /tmp/hdrescue/conf/captiveportal.sqlite /conf");
+		end
 
 		cmds:add("${root}sbin/umount /tmp/hdrescue");
 		if not cmds:execute() then
