@@ -57,7 +57,7 @@ TargetSystemUI.set_root_password = function(ts)
 	    id = "root_passwd",
 	    name = _("Set Root Password"),
 	    short_desc = _(
-		"Here you can set the super-user (root) password."
+		"Please set the super-user (root) password."
 	    ),
 
 	    fields = {
