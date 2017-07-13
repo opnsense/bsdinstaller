@@ -16,7 +16,6 @@ all: dirs
 	$(MAKE) -C src/lua all
 
 clean:
-	cd include; $(MAKE) clean
 	cd src; $(MAKE) clean
 	cd src/lib; $(MAKE) clean
 	cd src/luac; $(MAKE) clean
