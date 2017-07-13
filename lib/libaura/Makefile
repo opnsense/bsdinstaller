@@ -30,7 +30,7 @@ strip: ${SONAME}
 clean:
 	rm -rf *.o *.so *.so.? *.So *.a
 
-install: all
+install:
 	mkdir -p ${DESTDIR}/lib
 	cp ${SONAME} ${DESTDIR}/lib/
 	ln -sf ${SONAME} ${DESTDIR}/lib/${SOLINK}

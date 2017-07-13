@@ -37,7 +37,7 @@ lcurses.o: lcurses.c lpanel.c
 clean:
 	rm -f $(OBJS) $T core core.* *.core a.out
 
-strip: all
+strip:
 	${STRIP} $T
 
 install: strip

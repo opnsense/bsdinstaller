@@ -28,16 +28,12 @@ dirs:	bin lib
 bin lib:
 	mkdir -p $@
 
-# simple test to see Lua working
-test:	all
-	bin/lua test/hello.lua
-
 # remove debug information from binaries
 strip:
 	$(STRIP) bin/*
 
 # official installation
-install: all strip
+install: strip
 	$(INSTALL_EXEC) bin/* $(INSTALL_BIN)
 	$(INSTALL_DATA) lib/*.a $(INSTALL_LIB)
 	$(INSTALL_EXEC) lib/*.so* $(INSTALL_LIB)
