@@ -28,7 +28,10 @@ return {
 		end
 
 		cmds:execute()
-	
+
+                -- Force a password change
+		TargetSystemUI.set_root_password(App.state.target)
+
 		return step:next()
 	end
 }

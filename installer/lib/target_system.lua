@@ -269,7 +269,7 @@ TargetSystem.new = function(tab)
 	ts.cmds_set_password = function(ts, cmds, username, password)
 		cmds:add({
 		    cmdline = "${root}${CHROOT} ${root}${base} " ..
-			      "/${PW} usermod ${username} -h 0",
+			      "/usr/local/etc/rc.initial.password ${username} -h 0",
 		    replacements = {
 		        base = base,
 		        username = username

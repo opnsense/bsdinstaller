@@ -105,8 +105,16 @@ TargetSystemUI.set_root_password = function(ts)
 			local root_passwd_1 = result.datasets[1].root_passwd_1
 			local root_passwd_2 = result.datasets[1].root_passwd_2
 
-			-- XXX validate password for bad characters here XXX
-			
+			if root_passwd_1 == "" then
+				--
+				-- Password was empty - tell the user, let them try again.
+				--
+				ui:inform(
+				    _("The password cannot be empty.")
+				)
+				done = false
+			end
+
 			if root_passwd_1 == root_passwd_2 then
 				--
 				-- Passwords match, so set the root password.
