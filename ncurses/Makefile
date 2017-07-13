@@ -28,7 +28,7 @@ all: ${PROG}
 ${PROG}: ${OBJS}
 	${CC} ${OBJS} ${LDFLAGS} -o ${PROG}
 
-strip: ${PROG}
+strip:
 	strip ${PROG}
 
 clean:

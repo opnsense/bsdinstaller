@@ -14,7 +14,7 @@ all: compat-5.1.o
 compat-5.1.o: compat-5.1.c compat-5.1.h
 	$(CC) $(CFLAGS) -I$(LUA)/include -c compat-5.1.c -o compat-5.1.o
 
-strip: compat-5.1.o
+strip:
 	strip compat-5.1.o
 
 clean:

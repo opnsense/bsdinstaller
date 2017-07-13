@@ -32,7 +32,7 @@ $(LDYN): $(LOBJS)
 $(MDYN): $(MOBJS)
 	$(CC) ${MOBJS} $(COMPAT)/compat-5.1.o -shared ${LDFLAGS} -o $(MDYN)
 
-strip: $(LDYN) $(MDYN)
+strip:
 	strip $(LDYN) $(MDYN)
 
 clean:

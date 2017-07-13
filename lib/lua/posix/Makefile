@@ -24,19 +24,13 @@ T= $(MYLIB).so
 
 all:	$T
 
-strip:	$T
+strip:
 	strip $T
-
-test:	$T
-	$(LUABIN)/lua -l$(MYNAME) test.lua
 
 $T:	$(OBJS)
 	$(CC) -fPIC $(OBJS) $(COMPAT)/compat-5.1.o -shared $(LDFLAGS) -o $@
 
 $(OBJS): modemuncher.c
-
-tree:	$T
-	$(LUABIN)/lua -l$(MYNAME) tree.lua .
 
 clean:
 	rm -f $(OBJS) $T core core.* a.out

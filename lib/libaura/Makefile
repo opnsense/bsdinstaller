@@ -24,13 +24,13 @@ ${ANAME}: ${OBJS}
 	${AR} rc ${ANAME} ${OBJS}
 	${RANLIB} ${ANAME}
 
-strip: ${SONAME}
+strip:
 	strip ${SONAME}
 
 clean:
 	rm -rf *.o *.so *.so.? *.So *.a
 
-install:
+install: strip
 	mkdir -p ${DESTDIR}/lib
 	cp ${SONAME} ${DESTDIR}/lib/
 	ln -sf ${SONAME} ${DESTDIR}/lib/${SOLINK}

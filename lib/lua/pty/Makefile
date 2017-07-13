@@ -15,7 +15,7 @@ OBJS=	pty.o
 
 all: ${LIB}
 
-strip: ${LIB}
+strip:
 	strip ${LIB}
 
 ${LIB}: ${OBJS}

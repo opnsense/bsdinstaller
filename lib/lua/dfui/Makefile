@@ -22,7 +22,7 @@ all: ${LIB}
 ${LIB}: ${OBJS}
 	${CC} ${OBJS} ${COMPAT}/compat-5.1.o -shared ${LDFLAGS} -o ${LIB}
 
-strip: ${LIB}
+strip:
 	${STRIP} ${LIB}
 
 clean:
