@@ -80,11 +80,6 @@ TargetSystemUI.set_root_password = function(ts)
 		    id = "ok",
 		    name = _("Accept and Set Password")
 		},
-		{
-		    id = "cancel",
-		    accelerator = "ESC",
-		    name = _("Return to Configure Menu")
-		}
 	    },
 
 	    datasets = {
@@ -113,9 +108,7 @@ TargetSystemUI.set_root_password = function(ts)
 				    _("The password cannot be empty.")
 				)
 				done = false
-			end
-
-			if root_passwd_1 == root_passwd_2 then
+			elseif root_passwd_1 == root_passwd_2 then
 				--
 				-- Passwords match, so set the root password.
 				--
