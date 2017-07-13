@@ -116,9 +116,6 @@ TargetSystemUI.set_root_password = function(ts)
 				ts:cmds_set_password(cmds,
 				    "root", root_passwd_1)
 				if cmds:execute() then
-					ui:inform(
-					    _("The root password has been changed.")
-					)
 					done = true
 				else
 					ui:inform(
