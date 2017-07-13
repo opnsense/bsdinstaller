@@ -43,7 +43,7 @@ SOLINK=	lib${LIB}.so
 #
 # For 'make distribution'
 #
-DESTDIR?=/tmp/bsdinstaller/
+DESTDIR?=/usr/local
 
 #
 # For systems that don't support strlcpy:
