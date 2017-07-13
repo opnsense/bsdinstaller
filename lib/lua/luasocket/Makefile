@@ -32,27 +32,6 @@ $(LDYN): $(LOBJS)
 $(MDYN): $(MOBJS)
 	$(CC) ${MOBJS} $(COMPAT)/compat-5.1.o -shared ${LDFLAGS} -o $(MDYN)
 
-auxiliar.o: auxiliar.c auxiliar.h
-buffer.o: buffer.c buffer.h io.h timeout.h
-except.o: except.c except.h
-inet.o: inet.c inet.h socket.h io.h timeout.h usocket.h
-io.o: io.c io.h timeout.h
-luasocket.o: luasocket.c luasocket.h auxiliar.h except.h timeout.h \
-  buffer.h io.h inet.h socket.h usocket.h tcp.h udp.h select.h
-mime.o: mime.c mime.h
-options.o: options.c auxiliar.h options.h socket.h io.h timeout.h \
-  usocket.h inet.h
-select.o: select.c socket.h io.h timeout.h usocket.h select.h
-ssl.o: ssl.c ssl.h buffer.h io.h timeout.h socket.h usocket.h tcp.h
-tcp.o: tcp.c auxiliar.h socket.h io.h timeout.h usocket.h inet.h \
-  options.h tcp.h buffer.h
-timeout.o: timeout.c luasocket.h auxiliar.h timeout.h
-udp.o: udp.c auxiliar.h socket.h io.h timeout.h usocket.h inet.h \
-  options.h udp.h
-unix.o: unix.c auxiliar.h socket.h io.h timeout.h usocket.h options.h \
-  unix.h buffer.h
-usocket.o: usocket.c socket.h io.h  timeout.h usocket.h
-
 strip: $(LDYN) $(MDYN)
 	strip $(LDYN) $(MDYN)
 
