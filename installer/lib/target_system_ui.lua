@@ -57,7 +57,7 @@ TargetSystemUI.set_root_password = function(ts)
 	    id = "root_passwd",
 	    name = _("Set Root Password"),
 	    short_desc = _(
-		"Please set the super-user (root) password."
+		"Please set your super-user (root) password, or leave empty to keep the default."
 	    ),
 
 	    fields = {
@@ -90,52 +90,47 @@ TargetSystemUI.set_root_password = function(ts)
 	while not done do
 		result = ui:present(form)
 
-		if result.action_id == "ok" then
-			form.datasets = result.datasets
+		form.datasets = result.datasets
 
+		--
+		-- Fetch form field values.
+		--
+
+		local root_passwd_1 = result.datasets[1].root_passwd_1
+		local root_passwd_2 = result.datasets[1].root_passwd_2
+
+		if root_passwd_1 == "" then
 			--
-			-- Fetch form field values.
+			-- Password was empty - tell the user about that sort of thing...
 			--
-
-			local root_passwd_1 = result.datasets[1].root_passwd_1
-			local root_passwd_2 = result.datasets[1].root_passwd_2
-
-			if root_passwd_1 == "" then
-				--
-				-- Password was empty - tell the user, let them try again.
-				--
-				ui:inform(
-				    _("The password cannot be empty.")
-				)
-				done = false
-			elseif root_passwd_1 == root_passwd_2 then
-				--
-				-- Passwords match, so set the root password.
-				--
-				cmds = CmdChain.new()
-				ts:cmds_set_password(cmds,
-				    "root", root_passwd_1)
-				if cmds:execute() then
-					done = true
-				else
-					ui:inform(
-					    _("An error occurred when " ..
-					      "setting the root password.")
-					)
-					done = false
-				end
+			ui:warn(
+			    _("Okay, the default password will be kept for now. Please consider changing it from the GUI after the reboot.")
+			)
+			done = true
+		elseif root_passwd_1 == root_passwd_2 then
+			--
+			-- Passwords match, so set the root password.
+			--
+			cmds = CmdChain.new()
+			ts:cmds_set_password(cmds,
+			    "root", root_passwd_1)
+			if cmds:execute() then
+				done = true
 			else
-				--
-				-- Passwords don't match - tell the user, let them try again.
-				--
 				ui:inform(
-				    _("The passwords do not match.")
+				    _("An error occurred when " ..
+				      "setting the root password.")
 				)
 				done = false
 			end
 		else
-			-- Cancelled
-			done = true
+			--
+			-- Passwords don't match - tell the user, let them try again.
+			--
+			ui:inform(
+			    _("The passwords do not match.")
+			)
+			done = false
 		end
 	end
 end
