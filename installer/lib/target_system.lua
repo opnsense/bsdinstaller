@@ -520,7 +520,7 @@ TargetSystem.new = function(tab)
 		cmds:add("${root}${SYNC}")
 
 		-- Set up a proper chroot environment for later modifications
-		cmds:add("${root}${MOUNT} -t devfs devfs ${root}${base}dev")
+		cmds:add("${root}${MOUNT_DEVFS} ${root}${base}dev")
 		cmds:add("${root}${CHROOT} ${root}${base} " ..
 			      "/bin/sh /etc/rc.d/ldconfig start")
 	end

@@ -366,6 +366,7 @@ cmd_names = {
 
 	MOUNT		= "sbin/mount -o async",
 	MOUNT_MFS	= "sbin/mount_mfs",
+	MOUNT_DEVFS	= "sbin/mount -t devfs devfs",
 	UMOUNT		= "sbin/umount",
 	SWAPOFF		= "sbin/swapoff",
 	SWAPON		= "sbin/swapon",
