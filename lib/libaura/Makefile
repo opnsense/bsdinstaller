@@ -31,7 +31,7 @@ clean:
 	rm -rf *.o *.so *.so.? *.So *.a
 
 install: strip
-	mkdir -p ${DESTDIR}/lib
-	cp ${SONAME} ${DESTDIR}/lib/
-	ln -sf ${SONAME} ${DESTDIR}/lib/${SOLINK}
-	cp ${ANAME} ${DESTDIR}/lib/
+#	mkdir -p ${DESTDIR}/lib
+#	cp ${SONAME} ${DESTDIR}/lib/
+#	ln -sf ${SONAME} ${DESTDIR}/lib/${SOLINK}
+#	cp ${ANAME} ${DESTDIR}/lib/
