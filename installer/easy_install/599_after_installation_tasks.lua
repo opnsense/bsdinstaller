@@ -1,5 +1,5 @@
 --
---  This file cleans up after a normal install.
+-- This file cleans up after a normal install.
 --
 
 return {
@@ -30,8 +30,15 @@ return {
 
 		cmds:execute()
 
-                -- Force a password change
+		-- Force a password change
 		TargetSystemUI.set_root_password(App.state.target)
+
+		local cmds2 = CmdChain.new()
+
+		-- Run the necessary cleanups
+		App.state.target:cmds_post_cleanup(cmds2)
+
+		cmds2:execute()
 
 		return step:next()
 	end

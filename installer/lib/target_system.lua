@@ -491,7 +491,7 @@ TargetSystem.new = function(tab)
 
 	--
 	-- Run custom shared common tasks for post-install
-        --
+	--
 	ts.cmds_post_install = function(ts, cmds)
 		cmds:set_replacements{
 		    mtree_file = "etc/installed_filesystem.mtree",
@@ -518,6 +518,22 @@ TargetSystem.new = function(tab)
 
 		-- FWIW, sync all the things
 		cmds:add("${root}${SYNC}")
+
+		-- Set up a proper chroot environment for later modifications
+		cmds:add("${root}${MOUNT} -t devfs devfs ${root}${base}dev")
+		cmds:add("${root}${CHROOT} ${root}${base} " ..
+			      "/bin/sh /etc/rc.d/ldconfig start")
+	end
+
+	--
+	-- Run custom cleanup after post-install
+	--
+	ts.cmds_post_cleanup = function(ts, cmds)
+		cmds:set_replacements{
+		    base = base,
+		}
+
+		cmds:add("${root}${UMOUNT} ${root}${base}dev")
 	end
 
 	--
