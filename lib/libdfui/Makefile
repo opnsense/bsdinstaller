@@ -29,7 +29,7 @@ ${ANAME}: ${OBJS}
 	${RANLIB} ${ANAME}
 
 strip:
-	${STRIP ${SONAME}
+	${STRIP} ${SONAME}
 
 clean:
 	rm -rf *.o *.so *.so.* *.So *.a

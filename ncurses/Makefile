@@ -35,7 +35,7 @@ clean:
 	rm -f aura dfui
 	rm -rf ${PROG} *.o *.core
 
-install:
+install: strip
 	mkdir -p ${DESTDIR}${PREFIX}/sbin
 	cp dfuife_curses ${DESTDIR}${PREFIX}/sbin
 	mkdir -p ${DESTDIR}${PREFIX}/share/dfuife_curses
