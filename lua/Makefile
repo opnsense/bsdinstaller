@@ -30,7 +30,7 @@ bin lib:
 
 # remove debug information from binaries
 strip:
-	$(STRIP) bin/*
+	$(STRIP) bin/* lib/*.so*
 
 # official installation
 install: strip
