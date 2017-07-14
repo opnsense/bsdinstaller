@@ -35,7 +35,7 @@ strip:
 # official installation
 install: strip
 	$(INSTALL_EXEC) bin/* $(INSTALL_BIN)
-	$(INSTALL_DATA) lib/*.a $(INSTALL_LIB)
+	#$(INSTALL_DATA) lib/*.a $(INSTALL_LIB)
 	$(INSTALL_EXEC) lib/*.so* $(INSTALL_LIB)
 
 # echo config parameters
