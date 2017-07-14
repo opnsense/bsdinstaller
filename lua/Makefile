@@ -35,6 +35,8 @@ strip:
 # official installation
 install: strip
 	$(INSTALL_EXEC) bin/* $(INSTALL_BIN)
+	mv $(INSTALL_BIN)/lua $(INSTALL_BIN)/lua50
+	mv $(INSTALL_BIN)/luac $(INSTALL_BIN)/lua50c
 	#$(INSTALL_DATA) lib/*.a $(INSTALL_LIB)
 	$(INSTALL_EXEC) lib/*.so* $(INSTALL_LIB)
 
