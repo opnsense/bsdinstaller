@@ -1151,7 +1151,7 @@ Storage.Disk.new = function(parent, name)
 	method.cmds_install_bootblock = function(self, cmds, packet_mode)
 
 		if uefi == 1 then
-			cmds:add("${root}${GPART} add -t efi -s 800K " ..
+			cmds:add("${root}${GPART} add -t efi -s 200M " ..
 			    self:get_device_name())
 			cmds:add("${root}${DD} if=${root}boot/boot1.efifat of=/dev/" ..
 			    self:get_device_name() .. "p1")
