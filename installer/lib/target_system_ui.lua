@@ -99,7 +99,7 @@ TargetSystemUI.set_root_password = function(ts)
 		local root_passwd_1 = result.datasets[1].root_passwd_1
 		local root_passwd_2 = result.datasets[1].root_passwd_2
 
-		if root_passwd_1 == "" then
+		if root_passwd_1 == "" and root_passwd_2 == "" then
 			--
 			-- Password was empty - tell the user about that sort of thing...
 			--
