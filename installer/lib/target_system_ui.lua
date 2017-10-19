@@ -57,7 +57,7 @@ TargetSystemUI.set_root_password = function(ts)
 	    id = "root_passwd",
 	    name = _("Set Root Password"),
 	    short_desc = _(
-		"Please set your super-user (root) password, or leave empty to keep the default."
+		"Please set your super-user (root) password, or leave empty to keep the current one."
 	    ),
 
 	    fields = {
@@ -104,7 +104,7 @@ TargetSystemUI.set_root_password = function(ts)
 			-- Password was empty - tell the user about that sort of thing...
 			--
 			ui:warn(
-			    _("Okay, the default password will be kept for now. Please consider changing it from the GUI after the reboot.")
+			    _("Okay, the current password will be kept for now. Please consider changing it from the GUI after the reboot.")
 			)
 			done = true
 		elseif root_passwd_1 == root_passwd_2 then
