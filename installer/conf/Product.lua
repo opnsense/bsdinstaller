@@ -22,6 +22,10 @@ mountpoints = function(part_cap, ram_cap)
 	if ram_cap > (part_cap / 2) or part_cap < 4096 then
 		swap = ram_cap
 	end
+	-- limit swap partition to 8192
+	if swap > 8192 then
+		swap = 8192
+	end
 	swap = tostring(swap) .. "M"
 
 	return {
