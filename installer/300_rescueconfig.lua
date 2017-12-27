@@ -105,6 +105,9 @@ return {
 		if POSIX.stat("/tmp/hdrescue/conf/captiveportal.sqlite", "type") == "regular" then
 			cmds:add("${root}bin/cp /tmp/hdrescue/conf/captiveportal.sqlite /conf");
 		end
+		if POSIX.stat("/tmp/hdrescue/conf/dhcp6c_duid", "type") == "regular" then
+			cmds:add("${root}bin/cp /tmp/hdrescue/conf/dhcp6c_duid /conf");
+		end
 
 		cmds:add("${root}sbin/umount /tmp/hdrescue");
 		if not cmds:execute() then
