@@ -103,6 +103,9 @@ TargetSystemUI.set_root_password = function(ts)
 			--
 			-- Password was empty - tell the user about that sort of thing...
 			--
+			if ts == nil then
+				return root_passwd_1
+			end
 			ui:warn(
 			    _("Okay, the current password will be kept for now. Please consider changing it from the GUI after the reboot.")
 			)
@@ -111,14 +114,16 @@ TargetSystemUI.set_root_password = function(ts)
 			--
 			-- Passwords match, so set the root password.
 			--
+			if ts == nil then
+				return root_passwd_1
+			end
 			cmds = CmdChain.new()
-			ts:cmds_set_password(cmds,
-			    "root", root_passwd_1)
+			ts:cmds_set_password(cmds, "root", root_passwd_1)
 			if cmds:execute() then
 				done = true
 			else
 				ui:inform(
-				    _("An error occurred when " ..
+				    _("An error occurred while " ..
 				      "setting the root password.")
 				)
 				done = false
