@@ -242,6 +242,45 @@ return {
 		    App.state.sel_part:get_capacity():in_units("M"),
 		    App.state.storage:get_ram_capacity():in_units("M")
 		)
+
+		local swap_size = ""
+		local response = nil
+
+		for i, dataset in ipairs(datasets_list) do
+			if dataset.mountpoint == "swap" then
+				swap_size = dataset.capstring
+			end
+		end
+
+		if swap_size ~= "" then
+			response = App.ui:present{
+			    id = "partition_swap",
+			    name = _("Swap Partition"),
+			    short_desc = _(
+				"Continue with a recommended swap partition of size %s?", swap_size
+			    ),
+			    actions = {
+				{
+				    id = "keep",
+				    name = _("Yes"),
+				    effect = function()
+					return 1
+				    end
+				},
+				{
+				    id = "kill",
+				    name = _("No"),
+				    effect = function()
+					return 0
+				    end
+				}
+			    }
+			}
+		end
+
+		if response ~= nil and response.result == 0 then
+			datasets_list = App.conf.mountpoints(0, 0)
+		end
 	end
 
 	local fields_list = {
