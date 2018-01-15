@@ -94,7 +94,7 @@ return {
 				      "/bin/sh /etc/rc.d/ldconfig start")
 			cmds:add({
 			    cmdline = "${root}${CHROOT} /tmp/hdrescue " ..
-				      "/usr/local/etc/rc.initial.password root -h 0",
+				      "/usr/local/etc/rc.initial.password root -x 0",
 			    input = password .. "\n",
 			    sensitive = password
 			})
