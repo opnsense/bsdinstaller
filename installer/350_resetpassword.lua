@@ -92,12 +92,22 @@ return {
 			cmds:add("${root}${MOUNT_DEVFS} /tmp/hdrescue/dev")
 			cmds:add("${root}${CHROOT} /tmp/hdrescue " ..
 				      "/bin/sh /etc/rc.d/ldconfig start")
-			cmds:add({
-			    cmdline = "${root}${CHROOT} /tmp/hdrescue " ..
-				      "/usr/local/etc/rc.initial.password root -x 0",
-			    input = password .. "\n",
-			    sensitive = password
-			})
+			-- XXX compat for pre-18.7 versions
+			if POSIX.stat("/tmp/hdrescue/usr/local/etc/rc.initial.password", "type") == "regular" then
+				cmds:add({
+				    cmdline = "${root}${CHROOT} /tmp/hdrescue " ..
+					      "/usr/local/etc/rc.initial.password root -x 0",
+				    input = password .. "\n",
+				    sensitive = password
+				})
+			else
+				cmds:add({
+				    cmdline = "${root}${CHROOT} /tmp/hdrescue " ..
+					      "/usr/local/opnsense/scripts/shell/password.php root -x 0",
+				    input = password .. "\n",
+				    sensitive = password
+				})
+			end
 			cmds:add("${root}${UMOUNT} /tmp/hdrescue/dev")
 		else
 			message = _("The previous password was kept.")
