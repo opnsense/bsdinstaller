@@ -1,6 +1,6 @@
 --
 -- Copyright (c) 2009 Scott Ullrich <sullrich@gmail.com>
--- Copyright (c) 2014-2016 Franco Fichtner <franco@opnsense.org>
+-- Copyright (c) 2014-2018 Franco Fichtner <franco@opnsense.org>
 -- All rights reserved.
 --
 -- Redistribution and use in source and binary forms, with or without
@@ -48,85 +48,30 @@ return {
 		cancel_desc = _("Cancel")
 	})
 
-	-- Maybe abort was selected
 	if not dd then
 		return Menu.CONTINUE
 	end
 
 	local disk1 = dd:get_name()
 
-	-- Make sure source disk containing config.xml is selected
 	if not disk1 then
-		return Menu.CONTINUE
-	end
-
-	-- make sure that we have partition we reference after
-	local part1
-	if POSIX.stat("/dev/" .. disk1 .."s1a", "type") ~= nil then
-		-- MBR layout found
-		part1 = "/dev/" .. disk1 .."s1a"
-	elseif POSIX.stat("/dev/" .. disk1 .."p3", "type") ~= nil then
-		-- GPT layout found
-		part1 = "/dev/" .. disk1 .."p3"
-	else
-		App.ui:inform(_("Disk is not partitioned."))
 		return Menu.CONTINUE
 	end
 
 	local cmds = CmdChain.new()
 
-	cmds:add("${root}bin/mkdir -p /tmp/hdrescue");
-	cmds:add("${root}sbin/fsck -t ufs -y " .. part1 .. " > /dev/null");
-	cmds:add("${root}sbin/mount " .. part1 .. " /tmp/hdrescue");
+	cmds:add("${root}usr/local/sbin/opnsense-importer " .. disk1);
 
 	if not cmds:execute() then
+		App.ui:inform(_("The configuration import was aborted internally."))
 		return Menu.CONTINUE
 	end 
 
-	cmds = CmdChain.new()
-
-	if POSIX.stat("/tmp/hdrescue/conf", "type") == "directory" then
-		cmds:add("${root}bin/cp /tmp/hdrescue/conf/config.xml /conf/config.xml");
-		if POSIX.stat("/tmp/hdrescue/conf/backup", "type") == "directory" then
-			cmds:add("${root}bin/cp -r /tmp/hdrescue/conf/backup /conf");
-		end
-		if POSIX.stat("/tmp/hdrescue/conf/sshd", "type") == "directory" then
-			cmds:add("${root}bin/cp -r /tmp/hdrescue/conf/sshd /conf");
-		end
-		if POSIX.stat("/tmp/hdrescue/conf/rrd.tgz", "type") == "regular" then
-			cmds:add("${root}bin/cp /tmp/hdrescue/conf/rrd.tgz /conf");
-		end
-		if POSIX.stat("/tmp/hdrescue/conf/dhcpleases.tgz", "type") == "regular" then
-			cmds:add("${root}bin/cp /tmp/hdrescue/conf/dhcpleases.tgz /conf");
-		end
-		if POSIX.stat("/tmp/hdrescue/conf/netflow.tgz", "type") == "regular" then
-			cmds:add("${root}bin/cp /tmp/hdrescue/conf/netflow.tgz /conf");
-		end
-		if POSIX.stat("/tmp/hdrescue/conf/captiveportal.sqlite", "type") == "regular" then
-			cmds:add("${root}bin/cp /tmp/hdrescue/conf/captiveportal.sqlite /conf");
-		end
-		if POSIX.stat("/tmp/hdrescue/conf/dhcp6c_duid", "type") == "regular" then
-			cmds:add("${root}bin/cp /tmp/hdrescue/conf/dhcp6c_duid /conf");
-		end
-
-		cmds:add("${root}sbin/umount /tmp/hdrescue");
-		if not cmds:execute() then
-			return Menu.CONTINUE
-		end
-
-		App.ui:inform(_(
-			"The configuration has been sucessfully restored. You " ..
-			"may now choose to continue the installation or bring " ..
-			"up a live system by exiting this installer."
-		))
-	else
-		cmds:add("${root}sbin/umount /tmp/hdrescue");
-		if not cmds:execute() then
-			return Menu.CONTINUE
-		end
-
-		App.ui:inform(_("No previous configuration was found on this disk."))
-	end
+	App.ui:inform(_(
+		"The configuration has been sucessfully restored. You " ..
+		"may now choose to continue the installation or bring " ..
+		"up a live system by exiting this installer."
+	))
 
 	return Menu.CONTINUE
 
