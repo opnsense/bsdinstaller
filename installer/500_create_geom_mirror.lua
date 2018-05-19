@@ -79,18 +79,14 @@ return {
 
 	local dd = StorageUI.select_disk({
 		sd = App.state.storage,
-		short_desc = _(
-			"Select the primary disk %s ",
-			App.conf.product.name),
+		short_desc = _("Select the primary disk"),
 		cancel_desc = _("Cancel")
 	})
 	disk1 = dd:get_name()
 
 	local dd = StorageUI.select_disk({
 		sd = App.state.storage,
-		short_desc = _(
-			"Select the disk on which the mirror of %s ",
-			App.conf.product.name),
+		short_desc = _("Select the mirror disk"),
 		cancel_desc = _("Cancel")
 	})
 	disk2 = dd:get_name()
@@ -113,10 +109,10 @@ return {
 	end
 
 	local cmds = CmdChain.new()
-	-- XXX: switch to a while loop and allow user to add more than 2 disks
-	cmds:add{
-	cmdline = "${root}sbin/gmirror label -v -b split ${OS}Mirror ${disk1} ${disk2}",
-	replacements = {
+
+	cmds:add {
+		cmdline = "${root}sbin/gmirror label -v -b split ${OS} ${disk1} ${disk2}",
+		replacements = {
 			OS = App.conf.product.name,
 			disk1 = disk1,
 			disk2 = disk2
