@@ -269,7 +269,7 @@ TargetSystem.new = function(tab)
 	ts.cmds_set_password = function(ts, cmds, username, password)
 		cmds:add({
 		    cmdline = "${root}${CHROOT} ${root}${base} " ..
-			      "/usr/local/opnsense/scripts/shell/password.php ${username} -h 0",
+			      "/usr/local/sbin/opnsense-shell password ${username} -h 0",
 		    replacements = {
 		        base = base,
 		        username = username
