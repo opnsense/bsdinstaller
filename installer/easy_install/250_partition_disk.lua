@@ -635,7 +635,7 @@ local let_user_edit_partitions = function(step, population_function)
 	while not ok do
 		ok, datasets_list = edit_partitions(step, datasets_list)
 		if not ok then -- user cancelled
-			return step:prev()
+			return nil
 		end
 		ok = check_datasets(App.state.sel_disk, datasets_list)
 	end
@@ -653,7 +653,7 @@ local let_user_edit_partitions = function(step, population_function)
 	if alter_disk(App.state.sel_disk, datasets_list, changed) then
 		return step:next()
 	else
-		return step
+		return nil
 	end
 end
 

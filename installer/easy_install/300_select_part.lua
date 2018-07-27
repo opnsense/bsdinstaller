@@ -22,7 +22,7 @@ return {
 			    "or disk on which to install %s.",
 			    App.conf.product.name
 			))
-			return step
+			return nil
 		end
 
 		if pd:get_activated_swap():in_units("K") > 0 then
@@ -47,7 +47,7 @@ return {
 				    id = "cancel",
 				    name = _("Return to %s", step:get_prev_name()),
 				    accelerator = "ESC",
-				    effect = function() return step:prev() end
+				    effect = function() return nil end
 				}
 			    }
 			}
@@ -78,28 +78,12 @@ return {
 			pd:cmds_initialize_disklabel(cmds)
 
 			if cmds:execute() then
-			--[[
-				App.ui:inform(_(
-				    "Primary partition #%d was formatted.",
-				    pd:get_number())
-				)
-			--]]
 				return step:next()
 			else
-			--[[
-				App.ui:inform(_(
-				    "Primary partition #%d was "	..
-				    "not correctly formatted, and may "	..
-				    "now be in an inconsistent state. "	..
-				    "We recommend re-formatting it "	..
-				    "before proceeding.",
-				    pd:get_number())
-				)
-			--]]
-				return step
+				return nil
 			end
 	else
-		return step:prev()
+		return nil
 	end
     end
 }

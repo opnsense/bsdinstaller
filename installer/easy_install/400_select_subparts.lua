@@ -307,7 +307,7 @@ return {
 		    name = _("Return to %s", step:get_prev_name()),
 		    accelerator = "ESC",
 		    effect = function()
-			return step:prev()
+			return nil
 		    end
 	        }
 	}

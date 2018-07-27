@@ -75,7 +75,7 @@ return {
 
 		return step:next()
 	else
-		return step:prev()
+		return nil
 	end
     end
 }

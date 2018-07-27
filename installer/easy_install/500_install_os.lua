@@ -24,7 +24,7 @@ return {
 			App.ui:inform(
 			    _("Warning: already-mounted target system could " ..
 			      "not be correctly unmounted first."))
-			return step:prev()
+			return nil
 		end
 	end
 
@@ -62,13 +62,13 @@ return {
 		App.ui:inform(
 		    _("Could not create the skeletal target system.")
 		)
-		return step:prev()
+		return nil
 	end
 	if not App.state.target:mount() then
 		App.ui:inform(
 		    _("Could not mount the skeletal target system.")
 		)
-		return step:prev()
+		return nil
 	end
 	cmds:set_replacements{
 	    base = App.state.target:get_base(),
@@ -240,7 +240,11 @@ return {
 		    "${root}${CP} ${tmp}${logfile} ${root}${base}/var/log/${logfile}",
 		    "${root}${CHMOD} 600 ${root}${base}/var/log/${logfile}"
 		)
-		cmds:execute()
+
+		if not cmds:execute() then
+			return nil
+		end
+
 		App.reopen_log()
 
 		return step:next()
@@ -248,7 +252,7 @@ return {
 		App.ui:inform(
 		    _("%s was not fully installed.", App.conf.product.name)
 		)
-		return step:prev()
+		return nil
 	end
     end
 }

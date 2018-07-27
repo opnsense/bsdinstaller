@@ -20,7 +20,7 @@ return {
 		    "inconsistent state. We recommend "		..
 		    "re-formatting it before proceeding."
 		))
-		return step:prev()
+		return nil
 	end
 
 	return step:next()

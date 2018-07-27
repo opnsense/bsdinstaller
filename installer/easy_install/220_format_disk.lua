@@ -36,7 +36,9 @@ local format_disk = function(step, dd)
 	    disk = disk
 	}
 	cmdsGPT:add("${root}${GPART} destroy -F ${disk} || true");
-	cmdsGPT:execute()
+	if not cmdsGPT:execute() then
+		return false
+	end
 
 	dd:cmds_format(cmds)
 
@@ -89,6 +91,8 @@ return {
 		App.state.sel_part =
 		    App.state.sel_disk:get_part_by_number(1)
 		return step:next()
+	else
+		return nil
 	end
     end
 }

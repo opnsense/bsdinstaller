@@ -28,7 +28,9 @@ return {
 			    effect = function()
 				local cmds = CmdChain.new()
 				App.state.sel_disk:cmds_unmount_all_under(cmds)
-				cmds:execute()
+				if not cmds:execute() then
+					return nil
+				end
 				return step
 			    end
 			},

@@ -57,7 +57,10 @@ return {
 		end
 	end
 
-	cmds:execute()
+	if not cmds:execute() then
+		return nil
+	end
+
 	return step:next()
     end
 }

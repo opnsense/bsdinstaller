@@ -28,7 +28,9 @@ return {
 			end
 		end
 
-		cmds:execute()
+		if not cmds:execute() then
+			return nil
+		end
 
 		-- Force a password change
 		TargetSystemUI.set_root_password(App.state.target)
@@ -38,7 +40,9 @@ return {
 		-- Run the necessary cleanups
 		App.state.target:cmds_post_cleanup(cmds2)
 
-		cmds2:execute()
+		if not cmds2:execute() then
+			return nil
+		end
 
 		return step:next()
 	end
