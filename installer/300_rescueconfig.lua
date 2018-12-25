@@ -41,10 +41,11 @@ return {
 	effect = function()
 	local dd = StorageUI.select_disk({
 		sd = App.state.storage,
+		zfs = true,
 		short_desc = _(
 			"This tool will help you import the configuration of " ..
-			"a previous hard disk installation including backups. " ..
-			"Please select a disk:"),
+			"a previous hard disk installation including backups.\n\n" ..
+			"Please select a disk to continue:"),
 		cancel_desc = _("Cancel")
 	})
 
@@ -60,7 +61,7 @@ return {
 
 	local cmds = CmdChain.new()
 
-	cmds:add("${root}usr/local/sbin/opnsense-importer " .. disk1);
+	cmds:add("${root}${OPNSENSE_IMPORTER} " .. disk1);
 
 	if not cmds:execute() then
 		App.ui:inform(_("The configuration import was aborted internally."))

@@ -41,9 +41,11 @@ return {
 	effect = function()
 	local dd = StorageUI.select_disk({
 		sd = App.state.storage,
+		zfs = true,
 		short_desc = _(
 			"This tool will help you reset the root password of " ..
-			"a previous hard disk installation. Please select a disk:"),
+			"a previous hard disk installation.\n\n" ..
+			"Please select a disk to continue:"),
 		cancel_desc = _("Cancel")
 	})
 
@@ -89,13 +91,13 @@ return {
 		password = TargetSystemUI.set_root_password(nil)
 
 		if password ~= "" then
-			if POSIX.stat("/tmp/hdrescue/usr/local/sbin/opnsense-shell", "type") == "regular" then
+			if POSIX.stat("/tmp/hdrescue/${OPNSENSE_SHELL}", "type") == "regular" then
 				cmds:add("${root}${MOUNT_DEVFS} /tmp/hdrescue/dev")
 				cmds:add("${root}${CHROOT} /tmp/hdrescue " ..
 					      "/bin/sh /etc/rc.d/ldconfig start")
 				cmds:add({
 				    cmdline = "${root}${CHROOT} /tmp/hdrescue " ..
-					      "/usr/local/sbin/opnsense-shell password root -x 0",
+					      "/${OPNSENSE_SHELL} password root -x 0",
 				    input = password .. "\n",
 				    sensitive = password
 				})

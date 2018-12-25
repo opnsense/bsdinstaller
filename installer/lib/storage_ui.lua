@@ -49,6 +49,7 @@ StorageUI.select_disk = function(tab)
 
 	local sd = tab.sd or error("Need a storage descriptor")
 	local filter = tab.filter or function() return true end
+	local zfs = tab.zfs or nil
 
 	local add_disk_action = function(tdd)
 		local desc = tdd:get_desc()

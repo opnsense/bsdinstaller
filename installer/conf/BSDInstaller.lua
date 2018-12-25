@@ -426,7 +426,8 @@ cmd_names = {
 
 	TFTPD		= "usr/libexec/tftpd",
 
-	CVSUP		= "usr/local/bin/cvsup",
+	OPNSENSE_IMPORTER	= "usr/sbin/opnsense-importer",
+	OPNSENSE_SHELL		= "usr/sbin/opnsense-shell",
 
 	-- These aren't commands, but they're configurable here nonetheless.
 
