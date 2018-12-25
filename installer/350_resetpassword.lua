@@ -91,7 +91,7 @@ return {
 		password = TargetSystemUI.set_root_password(nil)
 
 		if password ~= "" then
-			if POSIX.stat("/tmp/hdrescue/${OPNSENSE_SHELL}", "type") == "regular" then
+			if POSIX.stat(App.expand("/tmp/hdrescue/${OPNSENSE_SHELL}"), "type") == "regular" then
 				cmds:add("${root}${MOUNT_DEVFS} /tmp/hdrescue/dev")
 				cmds:add("${root}${CHROOT} /tmp/hdrescue " ..
 					      "/bin/sh /etc/rc.d/ldconfig start")
