@@ -249,7 +249,7 @@ cb_click_insert_row(struct curses_widget *w)
 	/*
 	 * Repaint the form.
 	 */
-	curses_form_widget_ensure_visible(cf->widget_focus);
+	curses_form_widget_ensure_visible_fixup(cf->widget_focus, cf);
 	cf->want_y = cf->widget_focus->y;
 	curses_form_draw(cf);
 	curses_form_refresh(cf);

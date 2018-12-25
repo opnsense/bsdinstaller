@@ -90,6 +90,7 @@ struct curses_widget	*curses_widget_new(unsigned int, unsigned int,
 void			 curses_widget_free(struct curses_widget *);
 void			 curses_widget_draw(struct curses_widget *);
 void			 curses_widget_draw_tooltip(struct curses_widget *);
+void			 curses_widget_draw_fixup(struct curses_widget *, struct curses_form *);
 int			 curses_widget_can_take_focus(struct curses_widget *);
 void			 curses_widget_tooltip_set(struct curses_widget *, const char *);
 int			 curses_widget_set_click_cb(struct curses_widget *,

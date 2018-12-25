@@ -113,6 +113,7 @@ void			 curses_form_scroll_to(struct curses_form *, unsigned int, unsigned int);
 void			 curses_form_scroll_delta(struct curses_form *, int, int);
 int			 curses_form_widget_is_visible(struct curses_widget *);
 void			 curses_form_widget_ensure_visible(struct curses_widget *);
+void			 curses_form_widget_ensure_visible_fixup(struct curses_widget *, struct curses_form *);
 struct curses_widget	*curses_form_frob(struct curses_form *);
 
 int			 cb_click_close_form(struct curses_widget *);

@@ -399,7 +399,7 @@ curses_form_draw(struct curses_form *cf)
 
 	/* to put the cursor there */
 	curses_widget_draw_tooltip(cf->widget_focus);
-	curses_widget_draw(cf->widget_focus);
+	curses_widget_draw_fixup(cf->widget_focus, cf);
 }
 
 /*
@@ -426,7 +426,7 @@ curses_form_focus_skip_forward(struct curses_form *cf)
 		if (cf->widget_focus == NULL)
 			cf->widget_focus = cf->widget_head;
 	}
-	curses_form_widget_ensure_visible(cf->widget_focus);
+	curses_form_widget_ensure_visible_fixup(cf->widget_focus, cf);
 }
 
 void
@@ -437,7 +437,7 @@ curses_form_focus_skip_backward(struct curses_form *cf)
 		if (cf->widget_focus == NULL)
 			cf->widget_focus = cf->widget_tail;
 	}
-	curses_form_widget_ensure_visible(cf->widget_focus);
+	curses_form_widget_ensure_visible_fixup(cf->widget_focus, cf);
 }
 
 void
@@ -454,7 +454,7 @@ curses_form_advance(struct curses_form *cf)
 	cf->want_y = cf->widget_focus->y;
 	curses_widget_draw(w);
 	curses_widget_draw_tooltip(cf->widget_focus);
-	curses_widget_draw(cf->widget_focus);
+	curses_widget_draw_fixup(cf->widget_focus, cf);
 	curses_form_refresh(cf);
 #ifdef DEBUG
 	curses_debug_int(cf->widget_focus->user_id);
@@ -475,7 +475,7 @@ curses_form_retreat(struct curses_form *cf)
 	cf->want_y = cf->widget_focus->y;
 	curses_widget_draw(w);
 	curses_widget_draw_tooltip(cf->widget_focus);
-	curses_widget_draw(cf->widget_focus);
+	curses_widget_draw_fixup(cf->widget_focus, cf);
 	curses_form_refresh(cf);
 #ifdef DEBUG
 	curses_debug_int(cf->widget_focus->user_id);
@@ -643,7 +643,7 @@ curses_form_advance_row(struct curses_form *cf)
 	cf->want_y = cf->widget_focus->y;
 	curses_widget_draw(w);
 	curses_widget_draw_tooltip(cf->widget_focus);
-	curses_widget_draw(cf->widget_focus);
+	curses_widget_draw_fixup(cf->widget_focus, cf);
 	curses_form_refresh(cf);
 }
 
@@ -673,7 +673,7 @@ curses_form_retreat_row(struct curses_form *cf)
 	cf->want_y = cf->widget_focus->y;
 	curses_widget_draw(w);
 	curses_widget_draw_tooltip(cf->widget_focus);
-	curses_widget_draw(cf->widget_focus);
+	curses_widget_draw_fixup(cf->widget_focus, cf);
 	curses_form_refresh(cf);
 }
 
@@ -769,6 +769,14 @@ curses_form_widget_ensure_visible(struct curses_widget *w)
 	curses_form_scroll_delta(w->form, dx, dy);
 	curses_form_draw(w->form);
 	curses_form_refresh(w->form);
+}
+
+void
+curses_form_widget_ensure_visible_fixup(struct curses_widget *w, struct curses_form *cf)
+{
+	w->form = cf;	/* XXX for some reason this needs to be corrected */
+
+	curses_form_widget_ensure_visible(w);
 }
 
 static void

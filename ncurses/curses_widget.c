@@ -257,6 +257,14 @@ curses_widget_draw(struct curses_widget *w)
 }
 
 void
+curses_widget_draw_fixup(struct curses_widget *w, struct curses_form *cf)
+{
+	w->form = cf;	/* XXX for some reason this needs to be corrected */
+
+	curses_widget_draw(w);
+}
+
+void
 curses_widget_draw_tooltip(struct curses_widget *w)
 {
 	if (w->tooltip != NULL)
