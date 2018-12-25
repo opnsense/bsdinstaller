@@ -119,7 +119,7 @@ WARN= -Wall
 # debug information. If you only want the shared libraries, you may want to
 # add -fPIC to MYCFLAGS.
 #
-MYCFLAGS= ${EXTRA_CFLAGS}
+MYCFLAGS= # -g
 #MYCFLAGS= -O3 -fomit-frame-pointer # -fPIC
 
 # Write here any options you may need for your C linker.

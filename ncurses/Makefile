@@ -26,7 +26,7 @@ all: ${PROG}
 # Main target.
 
 ${PROG}: ${OBJS}
-	${CC} ${OBJS} ${LDFLAGS} -o ${PROG}
+	${CC} ${CFLAGS} ${OBJS} ${LDFLAGS} -o ${PROG}
 
 strip:
 	strip ${PROG}

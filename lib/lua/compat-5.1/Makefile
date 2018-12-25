@@ -1,13 +1,13 @@
 # $Id: Makefile,v 1.5.2.1 2009/01/03 19:49:46 sullrich Exp $
 
-CFLAGS += -fPIC
+CFLAGS+=	-fPIC
 
 BASE?=../../..
 include ${BASE}/Config
 
 LUA=../../../lua
 
-CFLAGS+=-Wall $(EXTRA_CFLAGS)
+CFLAGS+=	-Wall
 
 all: compat-5.1.o
 

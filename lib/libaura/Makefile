@@ -11,8 +11,6 @@ OBJS=	mem.o popen.o fspred.o \
 	dict.o buffer.o
 
 CFLAGS+=	${WARNS} -fPIC
-CFLAGS+=	${EXTRA_CFLAGS}
-LDFLAGS+=
 
 all: ${SONAME} ${ANAME}
 

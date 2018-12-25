@@ -13,7 +13,6 @@ OBJS=	common.o dfui.o progress.o
 
 CFLAGS+=	${WARNS} -fPIC -I/usr/local/include
 CFLAGS+=	-I${LUA}/include -I${COMPAT} -I../../libdfui
-CFLAGS+=	${EXTRA_CFLAGS}
 LDFLAGS+=	-L../../libdfui -L${LUA}/lib/
 LDFLAGS+=	-ldfui -lm -llua50 -llualib50
 

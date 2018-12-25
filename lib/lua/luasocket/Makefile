@@ -16,9 +16,9 @@ LOBJS=	luasocket.o timeout.o buffer.o io.o auxiliar.o except.o \
 
 MOBJS=	mime.o
 
-CFLAGS+=$(EXTRA_CFLAGS) -I$(LUA)/include -I$(COMPAT) \
-	 $(PROF) $(DBG) -pedantic -W -Wall -fPIC
-LDFLAGS+=-L$(LUA)/lib -llua -llualib
+CFLAGS+=	-I$(LUA)/include -I$(COMPAT) \
+		$(PROF) $(DBG) -pedantic -W -Wall -fPIC
+LDFLAGS+=	-L$(LUA)/lib -llua -llualib
 
 LDYN=lsocket.so
 
