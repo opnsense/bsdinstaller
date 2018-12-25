@@ -46,11 +46,11 @@ return {
 	local dd = StorageUI.select_disk{
 	    sd = App.state.storage,
 	    short_desc = _(
-		"This will automatically install %s with all of its current " ..
+		"This will automatically install %s with all current " ..
 		"settings without asking many questions.\n\n" ..
 		"WARNING: All contents of the selected hard disk will be erased! " ..
-		"This action is irreversible. Do you really want to continue?\n\n" ..
-		"Select a disk to continue:",
+		"This action is irreversible.\n\n" ..
+		"Please select a disk to continue:",
 	        App.conf.product.name),
 	    cancel_desc = _("Return to %s", step:get_prev_name())
 	}
