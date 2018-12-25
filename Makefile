@@ -1,5 +1,16 @@
 SUBDIR=	lua lib ncurses installer
 
+upgrade:
+.for DIR in ${SUBDIR}
+	@${MAKE} -C ${DIR} all
+.endfor
+.for DIR in ${SUBDIR}
+	@${MAKE} -C ${DIR} install
+.endfor
+.for DIR in ${SUBDIR}
+	@${MAKE} -C ${DIR} clean
+.endfor
+
 test:
 	-killall lua50
 	lua50c51 /usr/local/share/dfuibe_lua/main.lua \
