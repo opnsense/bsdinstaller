@@ -303,23 +303,25 @@ Storage.System.new = function()
 			end
 		end
 
-		os.execute(App.expand("${root}${KLDLOAD} zfs"))
+		-- loading the ZFS module is implied
 		os.execute(App.expand("${root}${ZPOOL} import -aNf"))
 
 		cmd = App.expand("${root}${ZPOOL} get -H cachefile | ${root}${AWK} '{ print $1 }'")
 		pty = Pty.Logged.open(cmd, App.log_string)
 		if pty then
-			local zfs_pool = pty:readline()
-			while zfs_pool do
-				local zfs_node = "zfs/" .. zfs_pool
-				tab[zfs_node] = Storage.Disk.new(self, zfs_node)
-				tab[zfs_node].set_desc(tab[zfs_node], zfs_pool .. ": ZFS pool")
-				tab[zfs_node].set_zfs(tab[zfs_node], 1);
-				zfs_pool = pty:readline()
+			local pool = pty:readline()
+			while pool do
+				os.execute(App.expand("${root}${ZPOOL} export " .. pool))
+				local node = "zfs/" .. pool
+				tab[node] = Storage.Disk.new(self, node)
+				tab[node]:survey()
+				tab[node]:set_desc(pool .. ": ZFS pool")
+				pool = pty:readline()
 			end
 			pty:close()
 		end
 
+		-- opportunistically remove ZFS module
 		os.execute(App.expand("${root}${KLDUNLOAD} zfs"))
 
 		return tab
@@ -430,7 +432,7 @@ Storage.System.new = function()
 		local i, n = 0, 0
 
 		for disk_name, dd in pairs(disk) do
-			if dd:set_zfs() == 0 then
+			if not dd:is_zfs() then
 				table.insert(list, dd)
 			elseif want_zfs then
 				table.insert(list, dd)
@@ -665,8 +667,8 @@ Storage.Disk.new = function(parent, name)
 	local desc = name	-- private: description of disk
 	local cyl, head, sec	-- private: geometry of disk
 	local touched = false	-- private: whether we formatted it
+	local zfs_pool = false	-- private: whether it is a ZFS pool
 	local uefi = 0		-- private: whether we want UEFI/GPT
-	local zfs = 0		-- private: whether it is a ZFS pool
 
 	--
 	-- Public methods: accessor methods.
@@ -685,11 +687,8 @@ Storage.Disk.new = function(parent, name)
 	--
 	-- Is a ZFS pool
 	--
-	method.set_zfs = function(self, value)
-		if value then
-			zfs = value
-		end
-		return zfs
+	method.is_zfs = function(self)
+		return zfs_pool
 	end
 
 	--
@@ -1386,6 +1385,10 @@ Storage.Disk.new = function(parent, name)
 	--
 	method.survey = function(self)
 		App.log("Surveying Disk: " .. name .. " ...")
+
+		if string.sub(name, 0, 4) == "zfs/" then
+			zfs_pool = true
+		end
 
 		self:describe_from_boot_messages()
 

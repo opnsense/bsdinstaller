@@ -1,6 +1,6 @@
 --
 -- Copyright (c) 2009 Scott Ullrich <sullrich@gmail.com>
--- Copyright (c) 2014-2017 Franco Fichtner <franco@opnsense.org>
+-- Copyright (c) 2014-2018 Franco Fichtner <franco@opnsense.org>
 -- All rights reserved.
 --
 -- Redistribution and use in source and binary forms, with or without
@@ -63,7 +63,10 @@ return {
 
 	-- make sure that we have partition we reference after
 	local part1
-	if POSIX.stat("/dev/" .. disk1 .."s1a", "type") ~= nil then
+	if dd:is_zfs() then
+		-- ZFS layout found
+		part1 = string.sub(disk1, 5)
+	elseif POSIX.stat("/dev/" .. disk1 .."s1a", "type") ~= nil then
 		-- MBR layout found
 		part1 = "/dev/" .. disk1 .."s1a"
 	elseif POSIX.stat("/dev/" .. disk1 .."p3", "type") ~= nil then
@@ -77,10 +80,17 @@ return {
 	local cmds = CmdChain.new()
 
 	cmds:add("${root}${MKDIR} -p /tmp/hdrescue");
-	cmds:add("${root}sbin/fsck -t ufs -y " .. part1 .. " > /dev/null");
-	cmds:add("${root}${MOUNT} " .. part1 .. " /tmp/hdrescue");
+
+	if dd:is_zfs() then
+		cmds:add("${root}${ZPOOL} import -fNR /tmp/hdrescue " .. part1);
+		cmds:add("${root}${MOUNT} -t zfs " .. part1 .. "/ROOT/default /tmp/hdrescue");
+	else
+		cmds:add("${root}sbin/fsck -t ufs -y " .. part1 .. " > /dev/null");
+		cmds:add("${root}${MOUNT} " .. part1 .. " /tmp/hdrescue");
+	end
 
 	if not cmds:execute() then
+		os.execute(App.expand("${root}${KLDUNLOAD} zfs"))
 		return Menu.CONTINUE
 	end
 
@@ -112,10 +122,18 @@ return {
 		message = _("No previous installation was found on this disk.")
 	end
 
-	cmds:add("${root}${UMOUNT} /tmp/hdrescue");
+	if dd:is_zfs() then
+		cmds:add("${root}${ZPOOL} export " .. part1);
+	else
+		cmds:add("${root}${UMOUNT} /tmp/hdrescue");
+	end
+
 	if not cmds:execute() then
+		os.execute(App.expand("${root}${KLDUNLOAD} zfs"))
 		return Menu.CONTINUE
 	end
+
+	os.execute(App.expand("${root}${KLDUNLOAD} zfs"))
 
 	App.ui:inform(message)
 
