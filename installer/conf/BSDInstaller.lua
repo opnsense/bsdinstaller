@@ -427,8 +427,8 @@ cmd_names = {
 
 	TFTPD		= "usr/libexec/tftpd",
 
-	OPNSENSE_IMPORTER	= "usr/sbin/opnsense-importer",
-	OPNSENSE_SHELL		= "usr/sbin/opnsense-shell",
+	OPNSENSE_IMPORTER	= "usr/local/sbin/opnsense-importer",
+	OPNSENSE_SHELL		= "usr/local/sbin/opnsense-shell",
 
 	-- These aren't commands, but they're configurable here nonetheless.
 
