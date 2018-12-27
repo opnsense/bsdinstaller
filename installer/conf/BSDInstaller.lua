@@ -387,6 +387,7 @@ cmd_names = {
 	KLDLOAD		= "sbin/kldload",
 	KLDUNLOAD	= "sbin/kldunload",
 	KLDSTAT		= "sbin/kldstat",
+	ZPOOL		= "sbin/zpool",
 
 	TOUCH		= "usr/bin/touch",
 	YES		= "usr/bin/yes",

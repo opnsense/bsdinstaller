@@ -70,7 +70,7 @@ StorageUI.select_disk = function(tab)
 		)
 	end
 
-	for dd in sd:get_disks() do
+	for dd in sd:get_disks(zfs) do
 		if filter(dd) then
 			add_disk_action(dd)
 		end

@@ -303,6 +303,25 @@ Storage.System.new = function()
 			end
 		end
 
+		os.execute(App.expand("${root}${KLDLOAD} zfs"))
+		os.execute(App.expand("${root}${ZPOOL} import -aNf"))
+
+		cmd = App.expand("${root}${ZPOOL} get -H cachefile | ${root}${AWK} '{ print $1 }'")
+		pty = Pty.Logged.open(cmd, App.log_string)
+		if pty then
+			local zfs_pool = pty:readline()
+			while zfs_pool do
+				local zfs_node = "zfs/" .. zfs_pool
+				tab[zfs_node] = Storage.Disk.new(self, zfs_node)
+				tab[zfs_node].set_desc(tab[zfs_node], zfs_pool .. ": ZFS pool")
+				tab[zfs_node].set_zfs(tab[zfs_node], 1);
+				zfs_pool = pty:readline()
+			end
+			pty:close()
+		end
+
+		os.execute(App.expand("${root}${KLDUNLOAD} zfs"))
+
 		return tab
 	end
 
@@ -405,13 +424,17 @@ Storage.System.new = function()
 	-- in this Storage.System each time it is called (typically in a
 	-- for loop.)
 	--
-	method.get_disks = function(self)
+	method.get_disks = function(self, want_zfs)
 		local disk_name, dd
 		local list = {}
 		local i, n = 0, 0
 
 		for disk_name, dd in pairs(disk) do
-			table.insert(list, dd)
+			if dd:set_zfs() == 0 then
+				table.insert(list, dd)
+			elseif want_zfs then
+				table.insert(list, dd)
+			end
 			n = n + 1
 		end
 
@@ -643,6 +666,7 @@ Storage.Disk.new = function(parent, name)
 	local cyl, head, sec	-- private: geometry of disk
 	local touched = false	-- private: whether we formatted it
 	local uefi = 0		-- private: whether we want UEFI/GPT
+	local zfs = 0		-- private: whether it is a ZFS pool
 
 	--
 	-- Public methods: accessor methods.
@@ -656,6 +680,16 @@ Storage.Disk.new = function(parent, name)
 			uefi = value
 		end
 		return uefi
+	end
+
+	--
+	-- Is a ZFS pool
+	--
+	method.set_zfs = function(self, value)
+		if value then
+			zfs = value
+		end
+		return zfs
 	end
 
 	--
@@ -695,15 +729,8 @@ Storage.Disk.new = function(parent, name)
 		local calculate_score = function(s)
 			local score = 0
 
-			-- In the absence of any good discriminator,
-			-- the longest disk description wins.
-			score = string.len(s)
-
 			-- Look for clues
 			if string.find(s, "%d+MB") then
-				score = score + 10
-			end
-			if string.find(s, "%<.*%>") then
 				score = score + 10
 			end
 			if string.find(s, "%[%d+%/%d+%/%d+%]") then
@@ -718,7 +745,7 @@ Storage.Disk.new = function(parent, name)
 			return score
 		end
 
-		if calculate_score(new_desc) > calculate_score(desc) then
+		if calculate_score(new_desc) >= calculate_score(desc) then
 			desc = new_desc
 		end
 	end
