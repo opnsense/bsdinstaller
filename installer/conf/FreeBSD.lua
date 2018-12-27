@@ -34,16 +34,6 @@ install_items = {
 	"var"
 }
 
-cmd_names = cmd_names + {
-	DISKLABEL = "sbin/bsdlabel",
-	CPDUP = "usr/local/bin/cpdup -vvv -I",
-	DHCPD = "usr/local/sbin/dhcpd",
-	RPCBIND = "usr/sbin/rpcbind",
-	MOUNTD = "usr/sbin/mountd",
-	NFSD = "usr/sbin/nfsd",
-	MODULES_DIR = "boot/kernel"
-}
-
 sysids = {
 	{ "FreeBSD",		165 },
 	{ "OpenBSD",		166 },
