@@ -482,7 +482,7 @@ lua_dfui_connection_new(lua_State *L)
 
 	transport_string = luaL_checkstring(L, 1);
 	rendezvous = luaL_checkstring(L, 2);
-	if (! (transport = get_transport(transport_string)) > 0) {
+	if ((transport = get_transport(transport_string)) <= 0) {
 		lua_pushnil(L);
 		return(1);
 	}
