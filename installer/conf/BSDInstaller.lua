@@ -376,8 +376,8 @@ cmd_names = {
 	-- These aren't commands, but they're configurable here nonetheless.
 
 	DMESG_BOOT	= "var/run/dmesg.boot",
-	MODULES_DIR	= "boot/kernel"
-	SYSCTL_DISKS	= "kern.disks",
+	MODULES_DIR	= "boot/kernel",
+	SYSCTL_DISKS	= "kern.disks"
 }
 
 --
