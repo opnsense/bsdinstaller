@@ -44,19 +44,10 @@ local arg = arg
 App = require("app")
 
 --
--- Check if gettext functionality is available to us.
--- If so, load it, but if not, stub it out.
+-- Stub out gettext functionality.
 --
-if pcall(function() require("gettext") end) then
-	GetText = require("gettext")
-	GetText.set_package("dfuibe_lua")
-	-- XXX use App.conf.dir.root here:
-	GetText.set_locale_dir("/usr/local/share/locale")
-	GetText.init()
-else
-	GetText = nil
-	_ = string.format
-end
+GetText = nil
+_ = string.format
 
 --
 -- Start the application.
@@ -73,15 +64,11 @@ Bitwise = require("bitwise")
 CmdChain = require("cmdchain")
 ConfigVars = require("configvars")
 Storage = require("storage")
-Network = require("network")
-NetworkUI = require("network_ui")
 Flow = require("flow")
 Menu = require("menu")
 StorageUI = require("storage_ui")
 TargetSystem = require("target_system")
 TargetSystemUI = require("target_system_ui")
-Package = require("package")
-PackageUI = require("package_ui")
 Socket = require("socket")
 socket = Socket -- Although this is not preferred, it is a common alias...
 
@@ -107,25 +94,15 @@ App.start_ui(App.UIBridge.new(require("dfui"), {
 --            |                | stuff will be installed *from*.
 -- target     | TargetSystem   | The system (as in, set of disks) which will
 --            |                | be installed onto, or which is being cfg'd
--- net_if     | Network.       | Represents the available network interfaces 
---            |   Interfaces   | of the entire running computer system.
--- all_pkgs   | Package.Set    | The set of all packages that the user
---            |                | has access to for installing.
--- sel_pkgs   | Package.Set    | The set of packages that the user has
---            |                | selected to be installed onto the system.
 -- rc_conf    | ConfigVars     | Settings that will be written to rc.conf
 --            |                | when the install or configure is finished.
--- resolv_conf| ConfigVars     | Similar to rc_conf, but for DNS settings.
 -- extra_fs   | table          | A list of extra filesystem descriptions,
 --            |                | to be written to the new /etc/fstab.
 -- do_exit    | boolean        | If set, exit after returning to main menu.
 -- do_reboot  | boolean        | If set, start the reboot sequence after
 --            |                | returning to the main menu.
--- lang_id    | string         | Identifier of the language the user has
---            |                | selected to work in, or nil for default.
 -- vidfont    | string         | Console setting
 -- keymap     | string         | Console setting
---
 -----------------------------------------------------------------------------
 
 -- Create a representation of the storage devices and probe them.
@@ -136,17 +113,8 @@ App.state.storage:survey()
 App.state.source = TargetSystem.use_current()
 TargetSystemUI.set_ui(App.ui)
 
--- Create a representation of the network interfaces and probe them.
-App.state.net_if = Network.Interfaces.new()
-App.state.net_if:probe()
-
--- Enumerate available packages from the install media.
-App.state.all_pkgs = Package.Set.new()
-App.state.all_pkgs:enumerate_installed_on(App.state.source)
-
 -- Set up the initial configuration variables
 App.state.rc_conf = ConfigVars.new()
-App.state.resolv_conf = ConfigVars.new()
 
 --
 -- First let the user configure the important user-interface aspects

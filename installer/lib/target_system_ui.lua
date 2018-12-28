@@ -522,7 +522,7 @@ TargetSystemUI.set_video_font = function(ts)
 
 	filename = ui:select_file{
 	    title = _("Select Console Font"),
-	    short_desc = _("Select a font appropriate to your video monitor and language."),
+	    short_desc = _("Select a font appropriate to your video monitor."),
 	    cancel_desc = _("Return to Configure Console"),
 	    dir = dir,
 	    predicate = function(filename)

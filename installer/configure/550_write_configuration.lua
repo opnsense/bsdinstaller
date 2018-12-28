@@ -18,10 +18,6 @@ return {
 	    base = App.state.target:get_base()
 	}), "sh")
 
-        App.state.resolv_conf:cmds_write(cmds, App.expand("${root}${base}etc/resolv.conf", {
-	    base = App.state.target:get_base()
-	}), "resolv")
-
 	if not cmds:execute() then
 		App.ui:inform(_(
 		    "Couldn't write changes to configuration files for some reason."

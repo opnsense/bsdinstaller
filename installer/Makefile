@@ -10,8 +10,7 @@ clean:
 install:
 	mkdir -p ${DESTDIR}${PREFIX}/share/dfuibe_lua
 	cp *.lua ${DESTDIR}${PREFIX}/share/dfuibe_lua/
-	for _subdir in lib conf easy_install pit install configure \
-	    configure/menu netboot; do \
+	for _subdir in lib conf easy_install pit install configure configure/menu; do \
 		mkdir -p ${DESTDIR}${PREFIX}/share/dfuibe_lua/$${_subdir}; \
 		cp $${_subdir}/*.lua ${DESTDIR}${PREFIX}/share/dfuibe_lua/$${_subdir}; \
 	done

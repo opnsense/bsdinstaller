@@ -148,16 +148,6 @@ cleanup_items = { }
 
 
 --
--- mtrees_post_copy: a table of directory trees to create, using 'mtree',
--- after everything has been copied.
---
-
-mtrees_post_copy = {
-    --["usr/local"] = "etc/mtree/BSD.local.dist",
-    --["usr/X11R6"] = "etc/mtree/BSD.x11-4.dist"
-}
-
---
 -- mountpoints: a function which takes two numbers (the capacity
 -- of the partition and the capacity of RAM, both in megabytes)
 -- and which returns a list of tables, each of which like:
@@ -288,20 +278,8 @@ use_cpdup = true
 --
 
 ui_nav_control = {
-	["*/configure_installed_system"] = "ignore",		-- don't put these on
-	["pre_install_tasks/select_language"] = "ignore",	-- do not show language selection
-	["pre_install_tasks/configure_network"] = "ignore",	-- no need for configuring network
-	["*/load_kernel_modules"] = "ignore",			-- do not ask about loading kernel modules
 	["*/pit/configure_console"] = "ignore",			-- do not ask about console
-	["*/pit/configure_network"] = "ignore",			-- do not ask about network
-	["*/*netboot*"] = "ignore",				-- ignore netboot installation services
-	["*/install/select_packages"] = "ignore",		-- do not do the "Select Packages" step on install
-	["*/install/confirm_install_os"] = "ignore",		-- no need to confirm os install
-	["*/install/warn_omitted_subpartitions"] = "ignore",	-- warn that /tmp /var and friends are being ommited
-	["*/install/finished"] = "ignore",			-- no need to extra spamming
-	["*/install/select_additional_filesystems"] = "ignore",	-- do not include additional filesystems prompts
-	["*/install/270_install_bootblocks.lua"] = "ignore",	-- ignore the old boot block installer program
-	["*/configure/*"] = "ignore",				-- do not configure, we've already did it.
+	["*/configure/*"] = "ignore",				-- do not configure, we've already done it
 }
 
 
@@ -335,7 +313,6 @@ cmd_names = {
 	TEST		= "bin/test",
 	TEST_DEV	= "bin/test -c",
 
-	DHCLIENT	= "sbin/dhclient",
 	DISKLABEL	= "sbin/bsdlabel",
 	DUMPON		= "sbin/dumpon",
 	FDISK		= "sbin/fdisk",
@@ -390,15 +367,9 @@ cmd_names = {
 	SWAPINFO	= "usr/sbin/pstat -s",
 	VIDCONTROL	= "usr/sbin/vidcontrol",
 
-	PKG_ADD		= "usr/sbin/pkg_add",
-	PKG_DELETE	= "usr/sbin/pkg_delete",
-	PKG_CREATE	= "usr/sbin/pkg_create",
-	PKG_INFO	= "usr/sbin/pkg_info",
-
 	TFTPD		= "usr/libexec/tftpd",
 
 	CPDUP		= "usr/local/bin/cpdup",
-	DHCPD		= "usr/local/sbin/dhcpd",
 	OPNSENSE_IMPORTER = "usr/local/sbin/opnsense-importer",
 	OPNSENSE_SHELL	= "usr/local/sbin/opnsense-shell",
 
@@ -484,21 +455,6 @@ offlimits_devices = { "fd%d+", "md%d+", "cd%d+" }
 window_subpartitions = { "c" }
 
 -------------------------------------------------------------------
--- Natural Language Services (NLS)
--------------------------------------------------------------------
-
---
--- languages: table of language descriptions.  The order that they are
--- listed here is the order they will be presented in the language-
--- selection menu.
---
--- Note that 'name' and 'short_desc' will be filtered through gettext
--- automatically later on, and don't need to be given with _() here.
---
-
-languages = {}
-
--------------------------------------------------------------------
 -- Debugging
 -------------------------------------------------------------------
 
@@ -526,9 +482,3 @@ fatal_errors = false
 -- example: offlimits_mounts  = { "unionfs" }
 
 offlimits_mounts = { }
-
---
--- Package file suffix.
---
-
-package_suffix = "txz"

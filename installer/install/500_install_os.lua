@@ -84,29 +84,6 @@ return {
 	App.state.target:cmds_install_srcs(cmds, App.conf.install_items)
 
 	--
-	-- Some directories may not have been copied to the HDD, but
-	-- may still be required/desired on a default install.  For
-	-- example, we generally don't want to copy the entire
-	-- "local packages" hierarchy, because the user may not want
-	-- all those packages on their system.  Instead, we can create
-	-- the heretofore uncopied directory trees using "mtree".
-	--
-	local mtree_dir, mtree_file
-	for mtree_dir, mtree_file in pairs(App.conf.mtrees_post_copy or {}) do
-		cmds:set_replacements{
-		    mtree_dir = mtree_dir,
-		    mtree_file = mtree_file
-		}
-		cmds:add(
-		    "${root}${MKDIR} -p ${root}${base}${mtree_dir}",
-		    {
-			cmdline = "${root}${MTREE} -deU -f ${root}${mtree_file} -p ${root}${base}${mtree_dir}",
-			log_mode = CmdChain.LOG_QUIET -- don't spam log
-		    }
-		)
-	end
-
-	--
 	-- Create symlinks to temporary directory.
 	--
 
