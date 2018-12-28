@@ -278,8 +278,9 @@ use_cpdup = true
 --
 
 ui_nav_control = {
-	["*/pit/configure_console"] = "ignore",			-- do not ask about console
-	["*/configure/*"] = "ignore",				-- do not configure, we've already done it
+	["*/configure_installed_system"] = "ignore",
+	["*/pit/configure_console"] = "ignore",
+	["*/configure/*"] = "ignore"
 }
 
 
