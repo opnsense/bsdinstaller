@@ -66,8 +66,9 @@ os = {
 --
 
 product = {
-	name = nil,
-	version = nil
+	-- no spaces here, used for disk label
+	name = "OPNsense",
+	version = "19.1"
 }
 
 
@@ -152,8 +153,8 @@ cleanup_items = { }
 --
 
 mtrees_post_copy = {
-    ["usr/local"] = "etc/mtree/BSD.local.dist",
-    ["usr/X11R6"] = "etc/mtree/BSD.x11-4.dist"
+    --["usr/local"] = "etc/mtree/BSD.local.dist",
+    --["usr/X11R6"] = "etc/mtree/BSD.x11-4.dist"
 }
 
 --
@@ -177,69 +178,31 @@ mtrees_post_copy = {
 -- space on the device to install anything at all.
 --
 
-mountpoints = function(part_megs, ram_megs)
-
-	--
-	-- NOTE: Minidumps require at least 64MB
-	--
-
-        --
-        -- The megabytes available on disk for non-swap use.
-        --
-        local avail_megs = part_megs
-
-	--
-	-- Now, based on the capacity of the partition,
-	-- return an appropriate list of suggested mountpoints.
-	--
-	if avail_megs < 300 then
-		return {}
-	elseif avail_megs < 523 then
+mountpoints = function(part_cap, ram_cap)
+	-- smaller than 30GB disables swap
+	if part_cap < 30720 then
 		return {
-			{ mountpoint = "/",	capstring = "70M" },
-			{ mountpoint = "swap",	capstring = "64M" },
-			{ mountpoint = "/var",	capstring = "32M" },
-			{ mountpoint = "/tmp",	capstring = "32M" },
-			{ mountpoint = "/usr",	capstring = "174M" },
-			{ mountpoint = "/home",	capstring = "*" }
-		}
-	elseif avail_megs < 1024 then
-		return {
-			{ mountpoint = "/",	capstring = "96M" },
-			{ mountpoint = "swap",	capstring = "64M" },
-			{ mountpoint = "/var",	capstring = "64M" },
-			{ mountpoint = "/tmp",	capstring = "64M" },
-			{ mountpoint = "/usr",	capstring = "256M" },
-			{ mountpoint = "/home",	capstring = "*" }
-		}
-	elseif avail_megs < 4096 then
-		return {
-			{ mountpoint = "/",	capstring = "128M" },
-			{ mountpoint = "swap",	capstring = "128M" },
-			{ mountpoint = "/var",	capstring = "128M" },
-			{ mountpoint = "/tmp",	capstring = "128M" },
-			{ mountpoint = "/usr",	capstring = "512M" },
-			{ mountpoint = "/home",	capstring = "*" }
-		}
-	elseif avail_megs < 10240 then
-		return {
-			{ mountpoint = "/",	capstring = "256M" },
-			{ mountpoint = "swap",	capstring = "256M" },
-			{ mountpoint = "/var",	capstring = "256M" },
-			{ mountpoint = "/tmp",	capstring = "256M" },
-			{ mountpoint = "/usr",	capstring = "3G" },
-			{ mountpoint = "/home",	capstring = "*" }
-		}
-	else
-		return {
-			{ mountpoint = "/",	capstring = "256M" },
-			{ mountpoint = "swap",	capstring = "256M" },
-			{ mountpoint = "/var",	capstring = "256M" },
-			{ mountpoint = "/tmp",	capstring = "256M" },
-			{ mountpoint = "/usr",	capstring = "8G" },
-			{ mountpoint = "/home",	capstring = "*" }
+			{ mountpoint = "/",     capstring = "*" },
 		}
 	end
+
+	-- calculate the suggested swap size
+	local swap = 2 * ram_cap
+	if ram_cap > (part_cap / 2) or part_cap < 4096 then
+		swap = ram_cap
+	end
+
+	-- limit swap partition to 8192
+	if swap > 8192 then
+		swap = 8192
+	end
+
+	swap = tostring(swap) .. "M"
+
+	return {
+		{ mountpoint = "/",     capstring = "*" },
+		{ mountpoint = "swap",  capstring = swap },
+	}
 end
 
 
@@ -325,19 +288,20 @@ use_cpdup = true
 --
 
 ui_nav_control = {
-	["*/install/select_packages"] = "ignore", -- do not do the "Select
-						  -- Packages" step on install
-
---						  -- examples follow:
---	["*/install/format_disk"] = "ignore",	  -- do not do the "Format
---						  -- Disk" step on install
---	["*/welcome"] = "ignore",		  -- no "welcome" items at all
-
---	["*/install/partition_disk"] = "ignore",  -- Don't show the Partition
---      ["*/install/select_part"] = "ignore",     -- Editor or selection.
---                                                -- Used in combination with
---                                                -- "Format Disk" step in
---                                                -- embedded apps, etc.
+	["*/configure_installed_system"] = "ignore",		-- don't put these on
+	["pre_install_tasks/select_language"] = "ignore",	-- do not show language selection
+	["pre_install_tasks/configure_network"] = "ignore",	-- no need for configuring network
+	["*/load_kernel_modules"] = "ignore",			-- do not ask about loading kernel modules
+	["*/pit/configure_console"] = "ignore",			-- do not ask about console
+	["*/pit/configure_network"] = "ignore",			-- do not ask about network
+	["*/*netboot*"] = "ignore",				-- ignore netboot installation services
+	["*/install/select_packages"] = "ignore",		-- do not do the "Select Packages" step on install
+	["*/install/confirm_install_os"] = "ignore",		-- no need to confirm os install
+	["*/install/warn_omitted_subpartitions"] = "ignore",	-- warn that /tmp /var and friends are being ommited
+	["*/install/finished"] = "ignore",			-- no need to extra spamming
+	["*/install/select_additional_filesystems"] = "ignore",	-- do not include additional filesystems prompts
+	["*/install/270_install_bootblocks.lua"] = "ignore",	-- ignore the old boot block installer program
+	["*/configure/*"] = "ignore",				-- do not configure, we've already did it.
 }
 
 
