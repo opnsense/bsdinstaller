@@ -55,8 +55,8 @@ dir = {
 -- that some other configuration file override these entries.
 
 os = {
-	name = nil,
-	version = nil
+	name = "FreeBSD",
+	version = "11.2"
 }
 
 
@@ -99,30 +99,38 @@ media_name = "LiveCD"
 --
 
 install_items = {
+	".cshrc",
+	".profile",
 	"COPYRIGHT",
 	"bin",
 	"boot",
+	"boot.config",
+	"conf",
 	"dev",
-	{ src = "etc.hdd", dest = "etc" },  -- install media config differs
+	"etc",
+	"home",
 	"lib",
 	"libexec",
-	"kernel",
-	"modules",
+	"media",
+	"proc",
+	"rescue",
 	"root",
 	"sbin",
-	"sys",		-- XXX What's the deal with this anyway?
+	"sys",
 	"usr/bin",
 	"usr/games",
 	"usr/include",
 	"usr/lib",
+	"usr/lib32",
 	"usr/libdata",
 	"usr/libexec",
+	"usr/local",
+	"usr/obj",
 	"usr/sbin",
 	"usr/share",
 	"usr/src",
-	"var"
+	"var",
 }
-
 
 --
 -- cleanup_items: list of files to remove from the HDD immediately following
@@ -456,7 +464,7 @@ mount_info_regexp = "^([^%s]+)%s+on%s+([^%s]+)%s+%(([^%s]+)"
 -- order they will appear in the partition editor.
 --
 sysids = {
-	{ "DragonFly/FreeBSD",	165 },
+	{ "FreeBSD",		165 },
 	{ "OpenBSD",		166 },
 	{ "NetBSD",		169 },
 	{ "MS-DOS",		 15 },
@@ -492,7 +500,7 @@ disklabel_on_disk = false
 -- num_subpartitions: number of subpartitions supported per disklabel.
 --
 
-num_subpartitions = 16
+num_subpartitions = 8
 
 --
 -- offlimits_devices: devices which the installer should not
@@ -526,7 +534,6 @@ window_subpartitions = { "c" }
 
 languages = {}
 
-
 -------------------------------------------------------------------
 -- Debugging
 -------------------------------------------------------------------
@@ -553,5 +560,11 @@ fatal_errors = false
 -- Offlimits mount points.  BSDInstaller will ignore these mount points
 --
 -- example: offlimits_mounts  = { "unionfs" }
+
 offlimits_mounts = { }
 
+--
+-- Package file suffix.
+--
+
+package_suffix = "txz"

@@ -37,40 +37,6 @@ end
 
 mtrees_post_copy = {} -- none
 
-install_items = {
-	".cshrc",
-	".profile",
-	"COPYRIGHT",
-	"bin",
-	"boot",
-	"boot.config",
-	"conf",
-	"dev",
-	"etc",
-	"home",
-	"lib",
-	"libexec",
-	"media",
-	"proc",
-	"rescue",
-	"root",
-	"sbin",
-	"sys",
-	"usr/bin",
-	"usr/games",
-	"usr/include",
-	"usr/lib",
-	"usr/lib32",
-	"usr/libdata",
-	"usr/libexec",
-	"usr/local",
-	"usr/obj",
-	"usr/sbin",
-	"usr/share",
-	"usr/src",
-	"var",
-}
-
 ui_nav_control = {
 	["*/configure_installed_system"] = "ignore",		-- don't put these on
 	["pre_install_tasks/select_language"] = "ignore",	-- do not show language selection
