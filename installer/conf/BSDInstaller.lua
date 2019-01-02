@@ -361,7 +361,7 @@ cmd_names = {
 	SWAPINFO	= "usr/sbin/pstat -s",
 	VIDCONTROL	= "usr/sbin/vidcontrol",
 
-	CPDUP		= "usr/local/bin/cpdup",
+	CPDUP		= "usr/local/bin/cpdup -vv",
 	OPNSENSE_IMPORTER = "usr/local/sbin/opnsense-importer",
 	OPNSENSE_SHELL	= "usr/local/sbin/opnsense-shell",
 
