@@ -73,8 +73,8 @@ Socket = require("socket")
 socket = Socket -- Although this is not preferred, it is a common alias...
 
 App.start_ui(App.UIBridge.new(require("dfui"), {
-	transport = App.conf.dfui_transport or "tcp",
-	rendezvous = App.conf.dfui_rendezvous or "9999",
+	transport = App.conf.dfui_transport or "npipe",
+	rendezvous = App.conf.dfui_rendezvous or "installer",
 	log = App.log
     }))
 
