@@ -203,13 +203,13 @@ main(int argc, char **argv)
 	argv += optind;
 
 	if (!transport)
-		transport = user_get_transport("npipe");
+		transport = user_get_transport("tcp");
 
 	if (rendezvous == NULL) {
 		if (transport == DFUI_TRANSPORT_TCP) {
 			rendezvous = aura_strdup("9999");
 		} else {
-			rendezvous = aura_strdup("installer");
+			rendezvous = aura_strdup("test");
 		}
 	}
 
