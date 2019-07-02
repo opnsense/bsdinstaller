@@ -68,7 +68,7 @@ os = {
 product = {
 	-- no spaces here, used for disk label
 	name = "OPNsense",
-	version = "19.1"
+	version = "19.7"
 }
 
 
