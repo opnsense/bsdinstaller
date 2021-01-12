@@ -56,7 +56,7 @@ dir = {
 
 os = {
 	name = "FreeBSD",
-	version = "11.2"
+	version = "12.1"
 }
 
 
@@ -68,7 +68,7 @@ os = {
 product = {
 	-- no spaces here, used for disk label
 	name = "OPNsense",
-	version = "20.7"
+	version = "21.1"
 }
 
 
